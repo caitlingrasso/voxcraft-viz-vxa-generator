@@ -33,7 +33,7 @@ class VXA:
         etree.SubElement(damping, "SlowDampingZ").text = '0.01' # Ground Damping
         etree.SubElement(damping, "BondDampingZ").text = '1'
 
-        # This doesn't work?
+        # This doesn't work for some reason
         collisions = etree.SubElement(sim, "Collisions")
         etree.SubElement(collisions, "SelfColEnabled").text = '1'
 
@@ -53,7 +53,7 @@ class VXA:
         etree.SubElement(thermal, "TempAmplitude").text = '15'
         etree.SubElement(thermal, "TempBase").text = '32'
         etree.SubElement(thermal, "VaryTempEnabled").text = '1'
-        etree.SubElement(thermal, "TempPeriod").text = '0.15'
+        etree.SubElement(thermal, "TempPeriod").text = '0.3'
 
     def write_vxc_xml(self):
         root = self.tree.getroot()
@@ -86,7 +86,7 @@ class VXA:
         # Muscle 2
         muscle2 = etree.SubElement(palette, "Material")
         muscle2.set('ID', "2")
-        self.write_material(muscle2, "Muscle2", rgb=(0,1,0), elastic_mod=1e+8, cte=0.01, material_temp_phase=np.pi/2)
+        self.write_material(muscle2, "Muscle2", rgb=(0,1,0), elastic_mod=1e+8, cte=0.01, material_temp_phase=0.5)
 
         # Bone
         bone = etree.SubElement(palette, "Material")
@@ -125,10 +125,10 @@ class VXA:
             X_Voxels, Y_Voxels, Z_Voxels = self.body.shape
             body = self.body
         else:
-            # Default: creates 20x20x20 world and places single voxel of Material 1 in the middle
-            X_Voxels = 20
-            Y_Voxels = 20
-            Z_Voxels = 20
+            # Default: creates 10x10x10 world and places single voxel of Material 1 in the middle
+            X_Voxels = 10
+            Y_Voxels = 10
+            Z_Voxels = 10
 
             body = np.zeros((X_Voxels, Y_Voxels, Z_Voxels), dtype=int)
             body[X_Voxels//2, Y_Voxels//2, 0]=1
