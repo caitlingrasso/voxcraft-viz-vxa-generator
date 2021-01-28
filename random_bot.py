@@ -1,7 +1,3 @@
-'''
-Author: Sam Kriegman
-'''
-
 import numpy as np
 from vxa_generator import vxa_from_array
 from scipy.ndimage.measurements import label
