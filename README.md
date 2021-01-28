@@ -9,7 +9,7 @@
 The script can be directly run in which case it produces a file named `a.vxa` with a single actuating voxel. This file can then be passed into voxcraft-viz for visualization. For example:
 
 ```
-python vxa_rw.py
+python vxa_generator.py
 voxcraft-viz a.vxa
 ```
 
