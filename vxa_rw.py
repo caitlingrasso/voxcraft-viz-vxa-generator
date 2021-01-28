@@ -78,15 +78,15 @@ class VXA:
 
         palette = etree.SubElement(vxc, "Palette")
 
-        # Active tissue
-        active_tissue = etree.SubElement(palette, "Material")
-        active_tissue.set('ID', "1")
-        self.write_material(active_tissue, "Active Tissue", rgb=(1,0,0), elastic_mod=1e+8, cte=0.01)
+        # Active material
+        active = etree.SubElement(palette, "Material")
+        active.set('ID', "1")
+        self.write_material(active, "Active", rgb=(1,0,0), elastic_mod=1e+8, cte=0.01)
 
-        # Passive tissue
-        passive_tissue = etree.SubElement(palette, "Material")
-        passive_tissue.set('ID', "2")
-        self.write_material(passive_tissue, "Passive Tissue", rgb=(0,1,1), elastic_mod=5e+7)
+        # Passive material
+        passive = etree.SubElement(palette, "Material")
+        passive.set('ID', "2")
+        self.write_material(passive, "Passive", rgb=(0,1,1), elastic_mod=5e+7)
 
         structure = etree.SubElement(vxc, "Structure")
         structure.set('Compression', "ASCII_READABLE")
