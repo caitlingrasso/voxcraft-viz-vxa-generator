@@ -81,7 +81,7 @@ class VXA:
         # Active tissue
         active_tissue = etree.SubElement(palette, "Material")
         active_tissue.set('ID', "1")
-        self.write_material(active_tissue, "Active Tissue", rgb=(1,0,0), elastic_mod=1e+8, cte=0.01, material_temp_phase=0)
+        self.write_material(active_tissue, "Active Tissue", rgb=(1,0,0), elastic_mod=1e+8, cte=0.01)
 
         # Passive tissue
         passive_tissue = etree.SubElement(palette, "Material")
@@ -122,7 +122,6 @@ class VXA:
 
             body = np.zeros((X_Voxels, Y_Voxels, Z_Voxels), dtype=int)
             body[X_Voxels//2, Y_Voxels//2, 0]=1
-            body[X_Voxels//2, Y_Voxels//2+2, 0]=2
             
         etree.SubElement(structure, "X_Voxels").text = str(X_Voxels)
         etree.SubElement(structure, "Y_Voxels").text = str(Y_Voxels)
