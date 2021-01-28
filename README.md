@@ -1,10 +1,10 @@
-# voxcraft-viz-vxa-rw
+# voxcraft-viz-vxa-generator
 
-`vxa_rw.py` is a simple script that generates a `.vxa` file that can be used to load stable parameters into [voxcraft-viz](https://github.com/voxcraft/voxcraft-viz) to visualize voxelbots composed of two materials: active (actuating) voxels and passive voxels. 
+`vxa_generator.py` is a simple script that generates a `.vxa` file that can be used to load stable parameters into [voxcraft-viz](https://github.com/voxcraft/voxcraft-viz) to visualize voxelbots composed of two materials: active (actuating) voxels and passive voxels. 
 
 ## Usage
 
-### Running `vxa_rw.py` directly
+### Running `vxa_generator.py` directly
 
 The script can be directly run in which case it produces a file named `a.vxa` with a single actuating voxel. This file can then be passed into voxcraft-viz for visualization. For example:
 
@@ -21,7 +21,7 @@ The script can also be used to load in a robot body specified by a 3-Dimensional
 
 ```
 import numpy as np
-from vxa_rw import vxa_from_array
+from vxa_generator import vxa_from_array
 
 body = np.zeros((2,2,2)) # body is a 2x2x2 cube
 body[:,:,0]=1 # bottom layer is active 
