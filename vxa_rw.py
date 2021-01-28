@@ -33,7 +33,7 @@ class VXA:
         etree.SubElement(damping, "SlowDampingZ").text = '0.01' # Ground Damping
         etree.SubElement(damping, "BondDampingZ").text = '1'
 
-        # This doesn't work for some reason
+        # This doesn't work.. I'm not sure why
         collisions = etree.SubElement(sim, "Collisions")
         etree.SubElement(collisions, "SelfColEnabled").text = '1'
 
@@ -78,25 +78,15 @@ class VXA:
 
         palette = etree.SubElement(vxc, "Palette")
 
-        # Muscle 1
-        muscle1 = etree.SubElement(palette, "Material")
-        muscle1.set('ID', "1")
-        self.write_material(muscle1, "Muscle1", rgb=(1,0,0), elastic_mod=1e+8, cte=0.01, material_temp_phase=0)
+        # Active tissue
+        active_tissue = etree.SubElement(palette, "Material")
+        active_tissue.set('ID', "1")
+        self.write_material(active_tissue, "Active Tissue", rgb=(1,0,0), elastic_mod=1e+8, cte=0.01, material_temp_phase=0)
 
-        # Muscle 2
-        muscle2 = etree.SubElement(palette, "Material")
-        muscle2.set('ID', "2")
-        self.write_material(muscle2, "Muscle2", rgb=(0,1,0), elastic_mod=1e+8, cte=0.01, material_temp_phase=0.5)
-
-        # Bone
-        bone = etree.SubElement(palette, "Material")
-        bone.set('ID', "3")
-        self.write_material(bone, "Bone", rgb=(0,0,1), elastic_mod=5e+8)
-        
-        # Fat
-        fat = etree.SubElement(palette, "Material")
-        fat.set('ID', "4")
-        self.write_material(fat, "Fat", rgb=(0,1,1), elastic_mod=5e+7)
+        # Passive tissue
+        passive_tissue = etree.SubElement(palette, "Material")
+        passive_tissue.set('ID', "2")
+        self.write_material(passive_tissue, "Passive Tissue", rgb=(0,1,1), elastic_mod=5e+7)
 
         structure = etree.SubElement(vxc, "Structure")
         structure.set('Compression', "ASCII_READABLE")
@@ -132,6 +122,7 @@ class VXA:
 
             body = np.zeros((X_Voxels, Y_Voxels, Z_Voxels), dtype=int)
             body[X_Voxels//2, Y_Voxels//2, 0]=1
+            body[X_Voxels//2, Y_Voxels//2+2, 0]=2
             
         etree.SubElement(structure, "X_Voxels").text = str(X_Voxels)
         etree.SubElement(structure, "Y_Voxels").text = str(Y_Voxels)
