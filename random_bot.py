@@ -41,12 +41,23 @@ def make_one_shape_only(output_state):
             
     return labeled == largest_label
 
+def shift_down(body):
+    while True:  # shift down until in contact with surface plane
+        if np.sum(body[:, :, 0]) == 0:
+            body[:, :, :-1] = body[:, :, 1:]
+            body[:, :, -1] = np.zeros_like(body[:, :, -1])
+        else:
+            break
+    return body
+
 
 random_noise = np.random.randint(n_mats, size=(WORKSPACE_LENGTH,)*3)
+random_noise = random_noise * (np.random.uniform(size=random_noise.shape)<0.4) # bias towards fewer voxels
 mask = make_one_shape_only(random_noise)
 
 body = np.zeros_like(random_noise)
 body[mask] = random_noise[mask]
+body = shift_down(body)
 
 vxa_from_array(body, save_filename='random_bot.vxa')
 
