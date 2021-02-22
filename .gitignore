@@ -1,3 +1,4 @@
 *.vxa
 test.py
 __pycache__/
+*.vxc

@@ -4,6 +4,7 @@
 
 import numpy as np 
 from lxml import etree
+import sys
 
 class VXA:
 
@@ -145,6 +146,32 @@ class VXA:
         with open('{}'.format(save_fn), 'w+') as f:
             f.write(etree.tostring(self.tree, encoding="unicode", pretty_print=True))
 
+def read_body_from_vxc(filename):
+    with open(filename, "r") as f:
+            tree = etree.parse(f)
+
+    X_Voxels = int(tree.find("*/X_Voxels").text)
+    Y_Voxels = int(tree.find("*/Y_Voxels").text)
+    Z_Voxels = int(tree.find("*/Z_Voxels").text)
+
+    data = tree.find("*/Data")
+    layers = data.xpath("Layer")    
+
+    assert(len(layers) == Z_Voxels)
+
+    body = np.zeros((X_Voxels,Y_Voxels,Z_Voxels),dtype=int)
+    for l,layer in enumerate(layers):
+        text = layer.text
+        assert(X_Voxels*Y_Voxels == len(text))
+        
+        arr = np.zeros(len(text))
+        for i,c in enumerate(text):
+            arr[i] = int(c)
+        
+        body[:,:,l] = arr.reshape(X_Voxels, Y_Voxels)
+
+    return body
+
 def vxa_from_array(body, save_filename=None):
     '''
     Function to be called from another script 
@@ -153,14 +180,24 @@ def vxa_from_array(body, save_filename=None):
         body (numpy.ndarray): 3D numpy array in the form (X_Voxels, Y_Voxels, Z_Voxels)
         save_filename (str): filename for the resulting vxa file (optional)
     '''
-    #TODO: exception handling
-    # make sure body is a 3D numpy array
+
     vxa = VXA(body=body)
     vxa.save_xml(save_filename)
 
 
 if __name__=='__main__':
-    # If this file is called directly, create a vxa file with a single voxel 
-    vxa = VXA()
-    vxa.save_xml()
+
+    if len(sys.argv)==2:
+        input_vxc = sys.argv[1]
+        body = read_body_from_vxc(input_vxc)
+
+        save_filename = input_vxc[:-3] + 'vxa'
+
+        vxa = VXA(body=body)
+        vxa.save_xml(save_filename)
+
+    else:
+        # If this file is called directly with no input vxc file, create a vxa file with a single voxel 
+        vxa = VXA()
+        vxa.save_xml()
 
